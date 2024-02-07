@@ -1,0 +1,28 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+<form action="/post" method="POST">
+    <h1>Whats on your mind</h1>
+    <input type="text" name="blog" placeholder="tell me about it">
+    <input type="submit" value="Post Blog">
+  </form>
+
+<% if (locals.content) { %>
+    <!-- <% for(let i = content.length - 1; i >= 0; i--) { %>
+        <div>
+            <p>
+                <%= content[i] %>
+            </p>
+            <form action="/" method="DELETE">
+                <input type="submit" value="Delete">
+            </form>
+        </div>
+    <% } %> -->
+    <div>
+        <p>
+            <%= content %>
+        </p>
+        <form action="/" method="DELETE">
+            <input type="submit" value="Delete">
+        </form>
+    </div>
+<% } %>
