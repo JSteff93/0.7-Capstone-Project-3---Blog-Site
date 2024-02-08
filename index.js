@@ -8,22 +8,43 @@ app.use(express.static("public"));
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
-var blogs = [];
-var counter = 0;
+let blogs = [];
+let counter = 0;
 
 app.get("/", (req, res) => {
-    res.render("index.ejs")
+    res.render("index.ejs",{blogs: blogs});
   });
 
-app.post("/post", (req, res) => {
-    // blogs.push(req.body["blog"]);
-    let blog = req.body["blog"];
-    // counter++
-    res.render("index.ejs", {content: blog, i: counter})
+app.post("/", (req, res) => {
+  const blogId = req.body.blogId;
+  console.log(blogId);
+
+  if (blogId){
+    const blogIndex = blogs.findIndex(blog => blog.id === blogId);
+    blogs[blogIndex].title = req.body.title;
+    blogs[blogIndex].blog = req.body.blog;
+  } else {
+    const newBlog = {
+      id: counter,
+      title: req.body.title,
+      blog: req.body.blog
+    }
+    counter ++
+    blogs.push(newBlog);
+    console.log(newBlog);
+  }
+  res.redirect("/");
+
 })
 
-app.delete("/", (req, res) =>{
-  res._destroy();
+app.get("/delete/:blogId", (req, res) =>{
+  const bId = req.params.blogId;
+  console.log(bId);
+  const upBlogs = blogs.filter(blog => blog.id != bId);
+  console.log(upBlogs);
+  blogs = upBlogs;
+
+  res.redirect("/");
 })
 
 app.listen(port, () => {
